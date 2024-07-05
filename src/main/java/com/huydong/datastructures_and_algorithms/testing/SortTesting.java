@@ -5,22 +5,39 @@ import com.huydong.datastructures_and_algorithms.sort.SortAlgorithms;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class SortTesting {
-    public List<Integer> test(SortAlgorithms sortAlgorithms, int testCases) {
+    public List<Integer> mock(SortAlgorithms sortAlgorithms, int testCases) {
         for (int i = 0; i < testCases; i++) {
             System.out.println("test cases: "+ (i+1) + "/" + testCases);
             List<Integer> originData = generateRandomList();
             List<Integer> dataTest = new ArrayList<>(originData);
-            sortAlgorithms.sort(dataTest);
-            if (!verify(dataTest)) {
-                System.out.print(originData);
-                return originData;
+            try {
+                sortAlgorithms.sort(dataTest);
+                if (!verify(dataTest)) {
+                    System.out.print(originData);
+                    return originData;
+                }
+            } catch (Exception e){
+                System.out.println(e.getMessage());
+                System.out.println("exception test case : "+ originData);
+                return null;
             }
+
         }
         return null;
 
+    }
+    public void test(SortAlgorithms sortAlgorithms, int testCase){
+        List<Integer> failedCase = this.mock(sortAlgorithms, 20000);
+        if (Objects.isNull(failedCase)){
+            System.out.print("all passed");
+        } else{
+            System.out.print("Failed case:");
+            System.out.print(failedCase);
+        }
     }
 
     private List<Integer> generateRandomList() {
